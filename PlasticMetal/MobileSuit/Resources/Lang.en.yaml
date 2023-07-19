@@ -1,0 +1,31 @@
+AllOK: All OK
+AllRightsReserved: . All rights reserved.
+ApplicationError: Unknown Error
+AutoDynamicParameter_Parse__0__length_not_match: ' length not match'
+AutoDynamicParameter_Parse__0__not_in_dictionary___1__: ' not in dictionary'
+AutoDynamicParameter_Parse__0__not_match_format______: ' not match format'
+Bic: 'Built-In Commands:'
+BicExp1: All of the Built-In Commands Can be used as default with the starting'
+BicExp2: ''' as prefix.'
+CommandParsingFailure: null
+CopyrightC: 'Copyright (c) '
+Default: Default
+Done: Completed
+Error: 'Error:'
+Interrupt: Keyboard Interrupt
+InvalidCommand: Invalid Command
+LogNotCached: Current Log has no Cache! Make it Cached!
+LsHelp1: Type '
+LsHelp2: ''' to get all available command.'
+MemberNotFound: Command Not Found
+Members: 'Commands:'
+MsHelp2: ''' to get MobileSuit Build in commands.'
+OnError: Error
+PoweredBy: ' Powered By '
+PromptGeneratorBuilder_NoRoute: Can't find available DI route for given providers.
+ReturnValue: Return Value
+Running: Running
+Tasks: 'Tasks: '
+Unknown: Unknown
+ViewBic: To View Built-In Commands, use Command '
+WorkInstance: 'Work Instance:'

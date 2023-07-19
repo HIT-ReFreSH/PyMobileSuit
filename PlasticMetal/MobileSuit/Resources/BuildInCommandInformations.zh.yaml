@@ -1,0 +1,12 @@
+ChDir: 切换工作文件夹
+ClearCompleted: 清除完成的任务
+Dir: 获取工作文件夹
+DirectoryNotFound: 目录未找到
+Exit: 退出MobileSuit
+Help: 显示Mobile Suit的帮助
+Join: 加入任务[Join <index>]
+List: 显示当前对象的所有成员
+Stop: 停止任务[Stop <index>]
+TaskNotFound: 任务未找到。
+Tasks: 显示当前任务
+Tasks_Title: '#\t命令\t状态\t结果'

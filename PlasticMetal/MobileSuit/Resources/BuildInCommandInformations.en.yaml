@@ -1,0 +1,12 @@
+ChDir: Set current dir
+ClearCompleted: Clear All Completed Tasks
+Dir: Get current dir
+DirectoryNotFound: Directory Not Found
+Exit: Exit MobileSuit
+Help: Show Help of MobileSuit
+Join: Join Task[Join <Index>]
+List: Show Members of the Current SuitObject
+Stop: Stop Task[Stop <Index>]
+TaskNotFound: Task Not Found.
+Tasks: Show All Tasks
+Tasks_Title: '#\tRequest\tStatus\tResponse'

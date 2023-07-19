@@ -1,0 +1,6 @@
+suit_alias = "____suit_alias"
+suit_ignored = "____suit_ignored"
+suit_included = "____suit_included"
+suit_info = "____suit_info"
+suit_parser = "____suit_parser"
+suit_injected = "____suit_injected"
