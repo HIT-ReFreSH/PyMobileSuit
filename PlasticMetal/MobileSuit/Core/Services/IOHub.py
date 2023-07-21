@@ -18,12 +18,13 @@ class IOHub(IIOHub, ABC):
     def __init__(self, promptFormatter: PromptFormatter, configurator: IIOHubConfigurator):
         """Initialize a IOServer."""
         self._Options: IOOptions = IOOptions.NoFlag
-        self.ColorSetting = IColorSetting.DefaultColorSetting
+        self.ColorSetting = IColorSetting.DefaultColorSetting()
         self.Input = sys.stdin
         self.Output = sys.stdout
         self.ErrorStream = sys.stderr
         self.FormatPrompt = promptFormatter
-        configurator(self)
+        if configurator is not None:
+            configurator(self)
         self.Prefix = []
 
     @property
@@ -205,7 +206,8 @@ class IOHub4Bit(IOHub):
         re = None
         for cc in ConsoleColor:
             c = PrintUnit.ConsoleColorCast(cc)
-            t = (c.R - r) ** 2 + (c.G - g) ** 2 + (c.B - b) ** 2
+            (cr,cg,cb) =c.rgb
+            t = (cr - r) ** 2 + (cg - g) ** 2 + (cb - b) ** 2
             if t == 0:
                 return cc
             if t < delta:

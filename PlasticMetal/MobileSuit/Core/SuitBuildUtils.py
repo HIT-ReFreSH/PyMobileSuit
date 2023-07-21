@@ -1,3 +1,4 @@
+import inspect
 from inspect import Parameter, signature, getmembers
 from typing import Optional, Callable, Any, get_args, get_origin, List
 
@@ -7,6 +8,7 @@ from .SuitContext import SuitContext
 from .SuitMethodParameterInfo import SuitMethodParameterInfo, TailParameterType
 from ..Decorators.DecoratorUtils import get_parser, get_injected
 from ..Decorators.SuitArgParser import SuitArgParserInfo
+from ...DependencyInjection import ServiceProvider, ServiceDescriptor, ServiceType
 
 SuitCommandTarget = "suit-cmd-target"
 SuitCommandTargetApp = "app"
@@ -48,10 +50,10 @@ def GetArg(parameter: Parameter, function: Callable, arg: Optional[str], context
 
 
 def GetArrayArg(parameter: Parameter, function: Callable, argArray: list[str], context: SuitContext) -> object:
-    type = get_args(parameter.annotation)[0]
-    array = list[type]()
+    otype = get_args(parameter.annotation)[0]
+    array = list[otype]()
     convert = CreateConverterFactory(
-        type, get_parser(function, parameter.name))(context)
+        otype, get_parser(function, parameter.name))(context)
     for arg in argArray:
         array.append(convert(arg))
     return array
@@ -65,7 +67,7 @@ def __GetParametersFromFunc(func: Callable) -> List[Parameter]:
 
 def GetMethodParameterInfo(func: Callable) -> SuitMethodParameterInfo:
     parameters = __GetParametersFromFunc(func)
-    suitMethodParameterInfo = SuitMethodParameterInfo(TailParameterType.Normal, 0, 0, 0)
+    suitMethodParameterInfo = SuitMethodParameterInfo()
     originCount = len(parameters)
     parameters = [p for p in parameters if not get_injected(func, p.name)]
     if originCount == 0:
@@ -73,7 +75,8 @@ def GetMethodParameterInfo(func: Callable) -> SuitMethodParameterInfo:
     else:
         if len(parameters) == 0:
             suitMethodParameterInfo.TailParameterType = TailParameterType.Normal
-        if issubclass(get_origin(parameters[-1].annotation), List):
+        tailParamAnnotation =get_origin(parameters[-1].annotation)
+        if inspect.isclass(tailParamAnnotation) and issubclass(tailParamAnnotation, List):
             suitMethodParameterInfo.TailParameterType = TailParameterType.Array
         # TODO: DynamicParameter support
         # elif parameters[-1].ParameterType.GetInterface("IDynamicParameter") is not None:
@@ -97,18 +100,26 @@ def GetMethodParameterInfo(func: Callable) -> SuitMethodParameterInfo:
 
 
 def CreateInstance(otype, s: SuitContext) -> Optional[Any]:
-    if otype in s.ServiceProvider:
-        return s.GetService(otype)
-    constructor = linq_first_or_default(getmembers(otype), lambda x: x[0] == '__init__')
+    service = s.GetService(otype)
+    if service is not None:
+        return service
+    constructor = linq_first_or_default(getmembers(otype), lambda x: x[0] == '__init__')[1]
     args = GetArgs(constructor, [], s)
 
-    return type(*args)
+    return otype(*args)
 
+def CreateInstanceWithProvider(otype, s: ServiceProvider) -> Optional[Any]:
+    service = s.GetService(otype)
+    if service is not None:
+        return service
 
-def __GetArgsInternal(func: Callable, parameterInfo: SuitMethodParameterInfo,
+    return ServiceDescriptor(otype, ServiceType.Singleton,None,None,otype).CreateInstance(s)
+
+def GetArgsInternal(func: Callable, parameterInfo: SuitMethodParameterInfo,
                       args: List[str], context: SuitContext) -> Optional[List[Optional[Any]]]:
     parameters = __GetParametersFromFunc(func)
     pass_: List[Any] = [None] * len(parameters)
+    if parameterInfo.TailParameterType==TailParameterType.NoParameter: return pass_
     i = 0
     j = 0
     try:
@@ -142,4 +153,4 @@ def __GetArgsInternal(func: Callable, parameterInfo: SuitMethodParameterInfo,
 
 
 def GetArgs(func: Callable, args: List[str], context: SuitContext) -> Optional[List[Optional[Any]]]:
-    return __GetArgsInternal(func, GetMethodParameterInfo(func), args, context)
+    return GetArgsInternal(func, GetMethodParameterInfo(func), args, context)

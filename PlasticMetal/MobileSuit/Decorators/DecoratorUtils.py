@@ -17,7 +17,6 @@ def get_info(func: Callable) -> Optional[str]:
     None, None)
     if expr is None:
         return None
-    assert expr is str
     return getattr(resObj, expr) if resObj is not None and hasattr(resObj, expr) else expr
 
 

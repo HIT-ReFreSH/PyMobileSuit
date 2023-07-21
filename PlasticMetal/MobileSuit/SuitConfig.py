@@ -1,0 +1,2 @@
+LOCALE='zh'
+THROW=False

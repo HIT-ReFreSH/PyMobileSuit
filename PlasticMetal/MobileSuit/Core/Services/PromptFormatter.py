@@ -32,6 +32,8 @@ class PromptFormatters:
         l = []
         orgList = list(origin)
         for i, unit in enumerate(orgList):
+            if (len(unit.Text) == 0):
+                continue
             output = []
             if i == 0:
                 output.append(' ')
@@ -46,22 +48,26 @@ class PromptFormatters:
         """A PowerLine themed prompt generator"""
         orgList = list(origin)
         # Power line theme uses inverse Background&Foreground
-        backGrounds = [p.Foreground or Color.Black for p in orgList]
+        backGrounds = [p.Foreground or Color('Black') for p in orgList]
         foreGrounds = [p.Background for p in orgList]
         for i in range(len(orgList)):
             if foreGrounds[i] is not None:
                 continue
-            bg = backGrounds[i]
-            foreGrounds[i] = Color.White if bg.R <= 0x7F or bg.G <= 0x7F or bg.B <= 0x7F else Color.Black
+            bgR, bgG, bgB = backGrounds[i].rgb
+            foreGrounds[i] = Color('White') if bgR <= 0x7F or bgG <= 0x7F or bgB <= 0x7F else Color('Black')
 
         r = []
         if len(orgList) > 0:
             r.append(PrintUnit(" ", foreGrounds[0], backGrounds[0]))
         for i in range(len(orgList)):
+
             txt = orgList[i].Text
+            if len(txt) == 0: continue
             if txt.startswith(Lang.Tasks):
                 txt = txt.replace(Lang.Tasks, f"{PromptFormatters.Lightning} ", 1)
             r.append(PrintUnit(f"{txt}", foreGrounds[i], backGrounds[i]))
             r.append(PrintUnit(" ", foreGrounds[i], backGrounds[i]))
-            r.append(PrintUnit(f"{PromptFormatters.RightTriangle} ", backGrounds[i], backGrounds[i + 1] if i + 1 < len(orgList) else None))
+            r.append(PrintUnit(f"{PromptFormatters.RightTriangle} ", backGrounds[i],
+                               backGrounds[i + 1] if i + 1 < len(orgList) else None))
+
         return r

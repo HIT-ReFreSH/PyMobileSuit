@@ -1,5 +1,4 @@
 from enum import IntEnum
-from typing import NamedTuple
 
 
 class TailParameterType(IntEnum):
@@ -28,26 +27,28 @@ class TailParameterType(IntEnum):
     """
 
 
-class SuitMethodParameterInfo(NamedTuple):
+class SuitMethodParameterInfo(object):
     """
     Parameter information of a method in MobileSuit
     """
-    TailParameterType: TailParameterType
-    """
-    Type of the last parameter
-    """
 
-    MinParameterCount: int
-    """
-    Number of the parameters which can be passed at most.
-    """
+    def __init__(self):
+        self.TailParameterType: TailParameterType = TailParameterType.NoParameter
+        """
+        Type of the last parameter
+        """
 
-    NonArrayParameterCount: int
-    """
-    Number of the parameters which are neither array nor DynamicParameter
-    """
+        self.MinParameterCount: int = 0
+        """
+        Number of the parameters which can be passed at most.
+        """
 
-    MaxParameterCount: int
-    """
-    Number of the parameters which can be passed at least.
-    """
+        self.NonArrayParameterCount: int = 0
+        """
+        Number of the parameters which are neither array nor DynamicParameter
+        """
+
+        self.MaxParameterCount: int = 0
+        """
+        Number of the parameters which can be passed at least.
+        """

@@ -112,15 +112,15 @@ class IColorSetting(ABC):
     def DefaultColorSetting():
         """Default color settings for IOServer."""
         return ColorSetting(
-            DefaultColor=Color.White,
-            ErrorColor=Color.Red,
-            PromptColor=Color.Magenta,
-            OkColor=Color.Green,
-            TitleColor=Color.YellowGreen,
-            InformationColor=Color.DarkCyan,
-            SystemColor=Color.DarkBlue,
-            WarningColor=Color.Orange,
-            BackgroundColor=Color.Black
+            DefaultColor=Color('White'),
+            ErrorColor=Color('Red'),
+            PromptColor=Color('Magenta'),
+            OkColor=Color('Green'),
+            TitleColor=Color('YellowGreen'),
+            InformationColor=Color('DarkCyan'),
+            SystemColor=Color('DarkBlue'),
+            WarningColor=Color('Orange'),
+            BackgroundColor=Color('Black')
         )
 
     @abstractmethod

@@ -1,7 +1,7 @@
-from typing import Callable, Any
+from typing import Callable, Any, List
 import inspect
 
-import SuitBuildUtils
+from . import SuitBuildUtils
 
 from .SuitMethodParameterInfo import TailParameterType
 
@@ -20,11 +20,13 @@ class SuitMethodShell(SuitShell):
         super().__init__(method, factory, absoluteName)
         self.Method = method
         sig = inspect.signature(method)
-        parameters = [param for (_, param) in filter(lambda x: x[0] != 'self', sig.parameters)]
+        parameters = [param for (_, param) in filter(lambda x: x[0] != 'self', sig.parameters.items())]
 
-        if 'self' not in parameters:
+        if 'self' not in sig.parameters:
             # For static methods
             self._instanceFactory = lambda _: None
+        else:
+            self._instanceFactory=factory
         self.Parameters = parameters
         self._suitMethodParameterInfo = SuitBuildUtils.GetMethodParameterInfo(
             self.Method)
@@ -61,28 +63,34 @@ class SuitMethodShell(SuitShell):
     def FromInstance(cls, method: Callable, factory: Callable[[SuitContext], Any]):
         return cls(method, factory)
 
-    def MayExecute(self, context: SuitContext) -> bool:
-        request = context.Request
-        return len(request) > 0 and request[0] in self.FriendlyNames and self.CanFitTo(len(request) - 1)
+    def MayExecute(self, request: List[str]) -> bool:
+        return len(request) > 0 and request[0].lower() in self.FriendlyNames and self.CanFitTo(len(request) - 1)
 
     async def _Execute(self, context: SuitContext, args):
         try:
             obj = self.GetInstance(context)
-
-            returnValue = self.Method(
-                obj, *args) if obj is not None else self.Method(*args)
+            if obj is not None:
+                if args:
+                    returnValue=self.Method(obj, *args)
+                else:
+                    returnValue=self.Method(obj)
+            else:
+                if args:
+                    returnValue=self.Method(*args)
+                else:
+                    returnValue=self.Method()
             if inspect.isawaitable(returnValue):
                 returnValue = await returnValue
 
             if isinstance(returnValue, RequestStatus):
-                context.Status = returnValue
+                context.RequestStatus = returnValue
                 context.Response = None
             else:
-                context.Status = RequestStatus.Handled
+                context.RequestStatus = RequestStatus.Handled
                 context.Response = str(
                     returnValue) if returnValue is not None else None
         except Exception as ex:
-            context.Status = RequestStatus.Faulted
+            context.RequestStatus = RequestStatus.Faulted
             raise ex
 
     def CanFitTo(self, argumentCount: int) -> bool:
@@ -95,7 +103,7 @@ class SuitMethodShell(SuitShell):
 
         args = context.Request[1:]
         try:
-            pass_ = SuitBuildUtils.__GetArgsInternal(
+            pass_ = SuitBuildUtils.GetArgsInternal(
                 self.Method, self._suitMethodParameterInfo, args, context)
             if pass_ is None:
                 return

@@ -75,4 +75,4 @@ class ParsingService(IParsingService):
         if type in self._parsers and name in self._parsers[type]:
             return self._parsers[type][name]
 
-        return lambda s: deserialize(s,type)
+        return lambda s: deserialize(s)

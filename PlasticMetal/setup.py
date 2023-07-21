@@ -14,27 +14,25 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="mobile-suit",
-    version="0.1.4.3",
-    keywords=["markdown", "Plastic-Metal"],
+    name="PyMobileSuit",
+    version="0.1",
+    keywords=["commandline", "cli", "framework", "Plastic-Metal"],
     description="To generate markdown-formatted lab reports.",
-    long_description="Light-weight tool to generate markdown-formatted lab reports. For python.",
+    long_description="MobileSuit provides an easy way to build Console App quickly. For python.",
     license="MIT",
 
-    url="https://github.com/Plastic-Metal/pyLabOn",
+    url="https://github.com/Plastic-Metal/PyMobileSuit",
     author="Ferdinand Sukhoi",
     author_email="ferdinandsukhoi@outlook.com",
 
     packages=find_packages(),
     package_data={
-        'mobile-suit':[
-            "PlasticMetal/MobileSuit/Resources/Lang.en.yaml",
-            "PlasticMetal/MobileSuit/Resources/BuildInCommandInformations.en.yaml",
-            "PlasticMetal/MobileSuit/Resources/Lang.zh.yaml",
-            "PlasticMetal/MobileSuit/Resources/BuildInCommandInformations.zh.yaml",
+        '':[
+            "*Resources/*.yaml",
         ]
     },
     include_package_data=True,
     platforms="any",
-    install_requires=["colour", "python-i18n[YAML]"]
+    python_requires='>=3.9',
+    install_requires=["colour"]
 )

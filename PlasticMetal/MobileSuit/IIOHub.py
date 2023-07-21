@@ -320,7 +320,8 @@ class IIOHub(ABC):
         Returns:
             Content from input stream, None if EOF, if user input "", return defaultValue
         """
-        self.Write(self.CreateReadLinePrompt(prompt, defaultValue, customPromptColor), OutputType.Prompt)
+        if len(prompt) > 0:
+            self.Write(self.CreateReadLinePrompt(prompt, defaultValue, customPromptColor), OutputType.Prompt)
         if newLine:
             self.Write("\n")
 

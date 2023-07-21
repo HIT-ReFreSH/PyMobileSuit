@@ -14,8 +14,8 @@ class FinalizeMiddleware(ISuitMiddleware):
             context.RequestStatus = RequestStatus.CommandNotFound
         history = context.ServiceProvider.GetRequiredService(IHistoryService)
         history.Response = context.Response
-        history.RequestStatus = {
-            RequestStatus.Handled or RequestStatus.Ok: RequestStatus.Ok,
+        history.Status = {
+            RequestStatus.Handled: RequestStatus.Ok,
             RequestStatus.OnExit: RequestStatus.OnExit,
             RequestStatus.NotHandled: RequestStatus.CommandNotFound,
             RequestStatus.Running: RequestStatus.Running,

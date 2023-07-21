@@ -1,8 +1,8 @@
 import inspect
 from abc import ABC, abstractmethod
-from typing import Iterable, Callable, Optional, Any
+from typing import Iterable, Callable, Optional, Any, List
 
-import SuitBuildUtils
+from . import SuitBuildUtils
 from ..Decorators import DecoratorUtils
 from PlasticMetal.CSharp import nameof
 from .SuitContext import SuitContext
@@ -30,7 +30,7 @@ class SuitObjectShell(SuitShell, ISuitShellCollection):
         for (name, member) in inspect.getmembers(typedef):
             if name.startswith("__") or DecoratorUtils.is_ignored(member):
                 continue
-            if isinstance(member, Callable):
+            if inspect.isfunction(member):
                 self.AddMethod(member)
             elif isinstance(member, property):
                 self.AddProperty(name, member)
@@ -75,10 +75,10 @@ class SuitObjectShell(SuitShell, ISuitShellCollection):
     @classmethod
     def FromType(cls, typedef, name=""):
         def InstanceFactory(s):
-            return SuitBuildUtils.CreateInstance(typedef, s) or object()
+            return SuitBuildUtils.CreateInstance(typedef, s.ServiceProvider) or object()
 
         info = DecoratorUtils.get_info(typedef)
-        return cls(type, InstanceFactory, info if info is not None else nameof(typedef), name)
+        return cls(typedef, InstanceFactory, info if info is not None else nameof(typedef), name)
 
     def AddMethod(self, method):
         self._subSystems.append(SuitMethodShell.FromInstance(
@@ -98,11 +98,10 @@ class SuitObjectShell(SuitShell, ISuitShellCollection):
                 return
         context.Request = origin
 
-    def MayExecute(self, context: SuitContext) -> bool:
-        request = context.Request
+    def MayExecute(self, request: List[str]) -> bool:
         if not self.AbsoluteName:
             return len(request) > 0 and any(sys.MayExecute(request) for sys in self._subSystems)
-        return len(request) > 1 and request[0] in self.FriendlyNames and any(
+        return len(request) > 1 and request[0].lower() in self.FriendlyNames and any(
             sys.MayExecute(request[1:]) for sys in self._subSystems)
 
     @staticmethod

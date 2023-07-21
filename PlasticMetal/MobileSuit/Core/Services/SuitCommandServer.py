@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from .SuitAppShell import SuitAppShell
 from .SuitHostShell import SuitHostShell

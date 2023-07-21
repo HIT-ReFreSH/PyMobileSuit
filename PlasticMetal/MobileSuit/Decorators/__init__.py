@@ -1,5 +1,4 @@
 from . import DecoratorNames
-from PlasticMetal.CSharp import *
 from ..Decorators.SuitArgParser import *
 
 
@@ -56,4 +55,4 @@ def SuitArgInjected(arg_name: str):
     return decorator
 
 
-__all__ = map(nameof,[SuitAlias, SuitIgnore, SuitInfo, SuitArgParser])
+__all__ = [nameof(x) for x in [SuitAlias, SuitIgnore, SuitInfo, SuitArgParser, SuitArgInjected]]

@@ -14,10 +14,10 @@ class HostShellMiddleware(ISuitMiddleware):
 
         # TODO: CancellationToken
         # if context.CancellationToken.IsCancellationRequested:
-        #     context.Status = RequestStatus.Interrupt
+        #     context.RequestStatus = RequestStatus.Interrupt
         #     await next(context)
 
-        if context.Status != RequestStatus.NotHandled:
+        if context.RequestStatus != RequestStatus.NotHandled:
             await nextStep(context)
             return
 
@@ -30,6 +30,6 @@ class HostShellMiddleware(ISuitMiddleware):
 
         server = context.ServiceProvider.GetRequiredService(SuitHostShell)
         await tasks.RunTaskImmediately(server.Execute(context))
-        if force and context.Status == RequestStatus.NotHandled:
-            context.Status = RequestStatus.CommandNotFound
+        if force and context.RequestStatus == RequestStatus.NotHandled:
+            context.RequestStatus = RequestStatus.CommandNotFound
         await nextStep(context)

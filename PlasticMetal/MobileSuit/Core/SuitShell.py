@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import IntEnum
-from typing import Callable, Any
+from typing import Callable, Any, List
 
 from ..Decorators import DecoratorUtils
 from PlasticMetal.CSharp import *
@@ -47,13 +47,9 @@ class SuitShell(ABC):
         """
         Aliases of this member.
         """
-        self.FriendlyNames = [self.AbsoluteName] + self.Aliases
+        self.FriendlyNames = [name.lower() for name in ([self.AbsoluteName] + self.Aliases)]
         """
         Absolute name, and aliases.
-        """
-        self.MemberCount = 0
-        """
-        MemberCount of shell. Used to sort.
         """
         self.Type: MemberType = MemberType.MethodWithoutInfo
         """
@@ -87,7 +83,7 @@ class SuitShell(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def MayExecute(self, context: SuitContext) -> bool:
+    def MayExecute(self, request: List[str]) -> bool:
         """
         Detect whether this IExecutable may execute the command.
         """

@@ -2,7 +2,7 @@ from enum import Enum, auto
 from typing import Callable, Iterable, Type, Any, Optional, List
 import inspect
 
-from PlasticMetal.CSharp import nameof
+from .CSharp import nameof
 
 
 class ServiceType(Enum):
@@ -42,8 +42,10 @@ class ServiceDescriptor(object):
         self.TActual = TActual
         if factory is None:
             factory = getattr(TActual, "__init__")
-        factoryParams = [(name, param) for name, param in filter(lambda x: x[0] != 'self', factory.items())]
-        if 'self' in factory:
+        factorySig = inspect.signature(factory).parameters
+        factoryParams = [(name, param) for name, param in
+                         filter(lambda x: x[0] != 'self', factorySig.items())]
+        if 'self' in factorySig:
             factory = TActual
         if dependencies is None:
             dependencies = []
@@ -87,6 +89,8 @@ class DagJudge:
         visited[node] = True
         stack[node] = True
         for neighbor in graph[node]:
+            if neighbor not in visited:
+                raise ServiceNotFound(neighbor, graph)
             if not visited[neighbor]:
                 if cls.dfs(graph, neighbor, visited, stack):
                     return True
@@ -109,7 +113,7 @@ class DagJudge:
     def check(cls, services: Iterable) -> bool:
         graph: dict[Any, Iterable[Any]] = {}
         for service in services:
-            graph[service.TService] = service.TRequireds
+            graph[service.TService] = service.Dependencies
         return cls.has_cycle(graph)
 
 
@@ -145,6 +149,8 @@ class ServiceProvider(object):
             ServiceProvider.EndLifeTime(scope)
         for instance in self.Managed:
             ServiceProvider.EndLifeTime(instance)
+        self._SubScopes = []
+        self.Managed = []
 
     def EnsureInstance(self, TService):
         desc: ServiceDescriptor = self._Services[TService]
@@ -175,6 +181,7 @@ class ServiceProvider(object):
         subScope = ScopedServiceProvider(
             [self], self._Services, self.Instances)
         self._SubScopes.append(subScope)
+        return subScope
 
     def Dispose(self):
         self.__exit__(None, None, None)
@@ -199,11 +206,13 @@ class ScopedServiceProvider(ServiceProvider):
                 if not isinstance(scope, ScopedServiceProvider) and managed:
                     self.Managed.remove(instance)
                     scope.Managed.append(instance)
+        return instance
 
     def CreateScope(self):
         subScope = ScopedServiceProvider(
             self._SuperScopes + [self], self._Services, self.Instances)
         self._SubScopes.append(subScope)
+        return subScope
 
 
 class DependencyRingError(Exception):
@@ -219,25 +228,26 @@ class ServiceBag(object):
         self._Services = {}
 
     def Build(self) -> ServiceProvider:
-        if DagJudge.check(self._Services):
+        if DagJudge.check(self._Services.values()):
             raise DependencyRingError
-        return ServiceProvider({s.TService: s for s in self._Services}, {})
+        return ServiceProvider({s.TService: s for s in self._Services.values()}, {})
 
     def AddDescriptor(self, desc: ServiceDescriptor) -> None:
         self._Services[desc.TService] = desc
 
     def AddSingleton(self, TService, factory: Optional[Callable] = None,
-                     dependencies: Optional[Iterable] = None) -> None:
+                     dependencies: Optional[Iterable] = None, TActual=None) -> None:
         self.AddDescriptor(ServiceDescriptor(
-            TService, ServiceType.Singleton, factory, dependencies))
+            TService, ServiceType.Singleton, factory, dependencies, TActual))
 
     def AddSingletonInstance(self, TService, instance) -> None:
         self.AddDescriptor(ServiceDescriptor(
-            TService, ServiceType.Singleton, lambda: instance, []))
+            TService, ServiceType.Singleton, lambda: instance, [], type(instance)))
 
-    def AddScoped(self, TService, dependencies: Optional[Iterable] = None, factory: Optional[Callable] = None) -> None:
+    def AddScoped(self, TService, dependencies: Optional[Iterable] = None, factory: Optional[Callable] = None,
+                  TActual=None) -> None:
         self.AddDescriptor(ServiceDescriptor(
-            TService, ServiceType.Scoped, factory, dependencies))
+            TService, ServiceType.Scoped, factory, dependencies, TActual))
 
 
 class ServiceInstantiationFailure(Exception):

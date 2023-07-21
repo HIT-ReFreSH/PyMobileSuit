@@ -12,10 +12,10 @@ class AppShellMiddleware(ISuitMiddleware):
     async def InvokeAsync(self, context: SuitContext, nextStep: SuitRequestDelegate) -> None:
         """Inherited from base class."""
         # if context.CancellationToken.IsCancellationRequested:
-        #     context.Status = RequestStatus.Interrupt
+        #     context.RequestStatus = RequestStatus.Interrupt
         #     await nextStep(context)
 
-        if context.Status != RequestStatus.NotHandled:
+        if context.RequestStatus != RequestStatus.NotHandled:
             await nextStep(context)
             return
 
@@ -24,11 +24,11 @@ class AppShellMiddleware(ISuitMiddleware):
         asTask = context.Properties.get(SuitBuildUtils.SuitCommandTarget) == SuitBuildUtils.SuitCommandTargetAppTask
         forceClient = context.Properties.get(SuitBuildUtils.SuitCommandTarget) == SuitBuildUtils.SuitCommandTargetApp
         if asTask:
-            context.Status = RequestStatus.Running
+            context.RequestStatus = RequestStatus.Running
             tasks.AddTask(client.Execute(context), context)
         else:
             await tasks.RunTaskImmediately(client.Execute(context))
-            if forceClient and context.Status == RequestStatus.NotHandled:
-                context.Status = RequestStatus.CommandNotFound
+            if forceClient and context.RequestStatus == RequestStatus.NotHandled:
+                context.RequestStatus = RequestStatus.CommandNotFound
 
         await nextStep(context)

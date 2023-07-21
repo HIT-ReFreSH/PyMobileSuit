@@ -14,18 +14,18 @@ class UserInputMiddleware(ISuitMiddleware):
 
     async def InvokeAsync(self, context: SuitContext, nextStep: SuitRequestDelegate):
         # if context.CancellationToken.is_cancellation_requested:
-        #     context.Status = RequestStatus.Interrupt
+        #     context.RequestStatus = RequestStatus.Interrupt
         #     await next(context)
 
-        if context.Status == RequestStatus.NoRequest:
+        if context.RequestStatus == RequestStatus.NoRequest:
             io = context.ServiceProvider.GetRequiredService(IIOHub)
             originInput = io.ReadLine()
             if originInput is None:
-                context.Status = RequestStatus.OnExit
+                context.RequestStatus = RequestStatus.OnExit
                 return
-
+            originInput = originInput[:-1]  # Remove tailing '\n'
             if originInput.startswith("#"):
-                context.Status = RequestStatus.Ok
+                context.RequestStatus = RequestStatus.Ok
                 return
 
             request, control = SplitCommandLine(originInput)
@@ -36,13 +36,13 @@ class UserInputMiddleware(ISuitMiddleware):
                     if i < len(control):
                         io.Output = open(control[i], 'w')
                     else:
-                        context.Status = RequestStatus.CommandParsingFailure
+                        context.RequestStatus = RequestStatus.CommandParsingFailure
                 elif control[i][0] == '<':
                     i += 1
                     if i < len(control):
                         io.Input = open(control[i], 'r')
                     else:
-                        context.Status = RequestStatus.CommandParsingFailure
+                        context.RequestStatus = RequestStatus.CommandParsingFailure
                 elif control[i][0] == '!':
                     context.Properties[SuitCommandTarget] = SuitCommandTargetApp
                 elif control[i][0] == '@':
@@ -50,14 +50,14 @@ class UserInputMiddleware(ISuitMiddleware):
                 elif control[i][0] == '&':
                     context.Properties[SuitCommandTarget] = SuitCommandTargetAppTask
                 else:
-                    context.Status = RequestStatus.CommandParsingFailure
+                    context.RequestStatus = RequestStatus.CommandParsingFailure
                 i += 1
 
             if len(request) == 0:
-                context.Status = RequestStatus.Ok
+                context.RequestStatus = RequestStatus.Ok
                 return
 
-            context.Status = RequestStatus.NotHandled
+            context.RequestStatus = RequestStatus.NotHandled
             context.Request = request
 
         await nextStep(context)
@@ -134,15 +134,13 @@ def SplitCommandLine(commandLine: str) -> Tuple[List[str], List[str]]:
     status = 0
     quote = "'"
     stk = []
-    i = 0
     buf = []
 
-    def commit():
-        nonlocal status, i
-        status = stk[-1] if stk else 0
-        (ctl if status == 1 else l).append(re.sub(r'\\(.)', r'\1', ''.join(buf[:i])))
-        status = 0
-        i = 0
+    def commit(local_buf, local_stk, local_ctl, local_l):
+        status = local_stk[-1] if stk else 0
+        unregexed=(''.join(local_buf)).encode('utf8').decode('unicode_escape')
+        (local_ctl if status == 1 else local_l).append(unregexed)
+        return 0, []
 
     def transitions(lastStatus: int, inputChar: str, currentQuote: str) -> Tuple[int, Operation]:
         if lastStatus == 0:
@@ -209,11 +207,11 @@ def SplitCommandLine(commandLine: str) -> Tuple[List[str], List[str]]:
         elif operation.StackOp is StackOp.Pop:
             status = stk.pop()
         if operation.SpaceCommit:
-            commit()
+            status, buf = commit(buf,  stk, ctl, l)
         if operation.SetQuote:
             quote = c
 
     if status == 2:
-        commit()
+        status, buf = commit(buf,  stk, ctl, l)
 
     return l, ctl

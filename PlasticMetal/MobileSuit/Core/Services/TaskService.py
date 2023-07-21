@@ -116,7 +116,7 @@ class TaskService(ITaskService):
         task, context = self._tasks[index]
         self._cancelTasks.Remove(task)
         await task
-        newContext.Status = context.RequestStatus
+        newContext.RequestStatus = context.RequestStatus
         newContext.Response = context.Response
 
     def ClearCompleted(self) -> None:

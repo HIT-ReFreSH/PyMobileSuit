@@ -39,12 +39,12 @@ class SuitAppShell(SuitShell, ISuitShellCollection):
     async def Execute(self, context: SuitContext) -> None:
         """Inherited from base class."""
         for shell in self._members:
-            if not shell.MayExecute(context):
+            if not shell.MayExecute(context.Request):
                 continue
             await shell.Execute(context)
             if context.RequestStatus != RequestStatus.NotHandled:
                 return
 
-    def MayExecute(self, context: SuitContext) -> bool:
+    def MayExecute(self, request: List[str]) -> bool:
         """Inherited from base class."""
-        return any(sys.MayExecute(context) for sys in self._members)
+        return any(sys.MayExecute(request) for sys in self._members)
