@@ -66,6 +66,12 @@ Suit.QuickStart4BitPowerLine(Hello)
 # > type `help` after the prompt.
 ```
 
+And this is the result:
+
+<div  align=center>
+    <img src="img/pyms-help.png" width = 50% height = 50%  />
+</div>
+
 ### Import and Configure
 
 `from PlasticMetal.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig` is ALL YOU NEED normally.
