@@ -1,5 +1,5 @@
 <div  align=center>
-    <img src="HIT-ReFreSH.png" width = 30% height = 30%  />
+    <img src="https://raw.githubusercontent.com/HIT-ReFreSH/PyMobileSuit/main/images/logo.png" width = 30% height = 30%  />
 </div>
 
 # ReFreSH.(Py)MobileSuit
