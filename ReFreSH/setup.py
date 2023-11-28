@@ -4,7 +4,7 @@
 """
 @File    :   setup.py
 @Contact :   ferdinandsukhoi@outlook.com
-@License :   (C)Copyright 2020 Plastic-Metal
+@License :   (C)Copyright 2020 HIT-ReFreSH
 
 @Modify Time      @Author    @Version    @Description
 ------------      -------    --------    -----------
@@ -16,12 +16,12 @@ from setuptools import setup, find_packages
 setup(
     name="PyMobileSuit",
     version="0.1",
-    keywords=["commandline", "cli", "framework", "Plastic-Metal"],
+    keywords=["commandline", "cli", "framework", "HIT-ReFreSH"],
     description="To generate markdown-formatted lab reports.",
     long_description="MobileSuit provides an easy way to build Console App quickly. For python.",
     license="MIT",
 
-    url="https://github.com/Plastic-Metal/PyMobileSuit",
+    url="https://github.com/HIT-ReFreSH/PyMobileSuit",
     author="Ferdinand Sukhoi",
     author_email="ferdinandsukhoi@outlook.com",
 

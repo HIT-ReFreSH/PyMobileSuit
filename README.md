@@ -1,25 +1,24 @@
 <div  align=center>
-    <img src="Plastic-Metal.png" width = 30% height = 30%  />
+    <img src="HIT-ReFreSH.png" width = 30% height = 30%  />
 </div>
 
-# PlasticMetal.(Py)MobileSuit
+# ReFreSH.(Py)MobileSuit
 
 ![PyPI](https://img.shields.io/pypi/v/PyMobileSuit?style=flat-square)
-![GitHub](https://img.shields.io/github/license/Plastic-Metal/PyMobileSuit?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/Plastic-Metal/PyMobileSuit?style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Plastic-Metal/PyMobileSuit/deploy?style=flat-square)
+![GitHub](https://img.shields.io/github/license/HIT-ReFreSH/PyMobileSuit?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/HIT-ReFreSH/PyMobileSuit?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/HIT-ReFreSH/PyMobileSuit/deploy?style=flat-square)
 ![PyPI - Format](https://img.shields.io/pypi/format/PyMobileSuit?style=flat-square)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/PyMobileSuit?style=flat-square)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/PyMobileSuit?style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/Plastic-Metal/PyMobileSuit?style=flat-square)
-![GitHub code size](https://img.shields.io/github/languages/code-size/Plastic-Metal/PyMobileSuit?style=flat-square)
-=
+![GitHub repo size](https://img.shields.io/github/repo-size/HIT-ReFreSH/PyMobileSuit?style=flat-square)
+![GitHub code size](https://img.shields.io/github/languages/code-size/HIT-ReFreSH/PyMobileSuit?style=flat-square)
 
 [View at PyPI](https://pypi.org/project/PyMobileSuit/)
 
 MobileSuit provides an easy way to build Console App quickly. For python.
 
-> This is the python version of [PlasticMetal.MobileSuit](https://github.com/Plastic-Metal/MobileSuit) (For .NET).
+> This is the python version of [ReFreSH.MobileSuit](https://github.com/HIT-ReFreSH/MobileSuit) (For .NET).
 
 ## Setup
 
@@ -33,7 +32,7 @@ There is a quite simple example:
 
 ```python
 # [Import and Configure]
-from PlasticMetal.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig
+from ReFreSH.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig
 SuitConfig.LOCALE = 'en'
 
 # [Write Application Class]
@@ -69,12 +68,13 @@ Suit.QuickStart4BitPowerLine(Hello)
 And this is the result:
 
 <div  align=center>
-    <img src="img/pyms-help.png" width = 50% height = 50%  />
+    <img src="img/pyms-help.png"/>
 </div>
+
 
 ### Import and Configure
 
-`from PlasticMetal.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig` is ALL YOU NEED normally.
+`from ReFreSH.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig` is ALL YOU NEED normally.
 
 There are two configurations for PyMobileSuit:
 

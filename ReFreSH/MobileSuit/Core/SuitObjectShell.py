@@ -4,7 +4,7 @@ from typing import Iterable, Callable, Optional, Any, List
 
 from . import SuitBuildUtils
 from ..Decorators import DecoratorUtils
-from PlasticMetal.CSharp import nameof
+from ReFreSH.CSharp import nameof
 from .SuitContext import SuitContext
 from .SuitMethodShell import SuitMethodShell
 from .SuitShell import SuitShell, MemberType

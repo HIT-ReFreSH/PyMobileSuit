@@ -1,6 +1,6 @@
 from typing import Generic, TypeVar, Callable, Optional
 
-from PlasticMetal.CSharp import nameof
+from ReFreSH.CSharp import nameof
 from . import DecoratorNames
 
 T = TypeVar('T')

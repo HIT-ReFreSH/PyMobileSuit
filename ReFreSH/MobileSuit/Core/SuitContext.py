@@ -1,5 +1,5 @@
 from ..RequestStatus import RequestStatus
-from PlasticMetal.DependencyInjection import ServiceProvider
+from ReFreSH.DependencyInjection import ServiceProvider
 
 from typing import Optional, Any
 

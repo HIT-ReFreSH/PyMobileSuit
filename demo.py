@@ -1,5 +1,5 @@
 
-from PlasticMetal.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig
+from ReFreSH.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig
 SuitConfig.LOCALE = 'en'
 
 

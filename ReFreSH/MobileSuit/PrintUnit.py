@@ -2,7 +2,7 @@ from typing import Optional, Iterable
 
 from colour import Color
 
-from PlasticMetal.ConsoleColor import ConsoleColor
+from ReFreSH.ConsoleColor import ConsoleColor
 
 
 class PrintUnit:

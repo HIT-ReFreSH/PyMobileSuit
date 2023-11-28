@@ -3,7 +3,7 @@ from enum import IntEnum
 from typing import Callable, Any, List
 
 from ..Decorators import DecoratorUtils
-from PlasticMetal.CSharp import *
+from ReFreSH.CSharp import *
 from .SuitContext import SuitContext
 
 
