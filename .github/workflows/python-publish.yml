@@ -12,7 +12,9 @@ on:
   workflow_dispatch: {}
   release:
     types: [published]
-
+environment:
+    name: pypi
+    url: https://pypi.org/p/PyMobileSuit
 permissions:
   contents: read
 
@@ -37,6 +39,6 @@ jobs:
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
-        working-directory: ./ReFreSH/
+        packages-dir: ./ReFreSH/
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
