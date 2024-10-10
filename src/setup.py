@@ -17,7 +17,7 @@ setup(
     name="PyMobileSuit",
     version="0.1.1",
     keywords=["commandline", "cli", "framework", "HIT-ReFreSH"],
-    description="To generate markdown-formatted lab reports.",
+    description="An easy way to build python-CLI App quickly.",
     long_description="MobileSuit provides an easy way to build Console App quickly. For python.",
     license="MIT",
 
