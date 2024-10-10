@@ -6,8 +6,6 @@ def null_collapse(obj, default):
     return default if obj is None else obj
 
 
-
-
 def linq_first_or_default(l, f):
     for x in l:
         if f(x):

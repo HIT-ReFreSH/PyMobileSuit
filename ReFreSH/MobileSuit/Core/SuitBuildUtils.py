@@ -22,14 +22,14 @@ def CreateConverterFactory(T, parserInfo: SuitArgParserInfo) -> Callable[
     [SuitContext], Callable[[str], Optional[object]]]:
     def converter(context: SuitContext):
         myT = T
-        if parserInfo.Converter is not None:
-            return parserInfo
-        if issubclass(get_origin(myT), List):
-            myT = get_args(myT)[0]
-
+        myParserInfo = SuitArgParserInfo('', None) if parserInfo is None else parserInfo
+        if myParserInfo.Converter is not None:
+            return myParserInfo
         if issubclass(myT, str):
             return lambda s: s
-        return context.GetRequiredService(IParsingService).Get(myT, null_collapse(parserInfo.Name, ''))
+        if issubclass(get_origin(myT), List):
+            myT = get_args(myT)[0]
+        return context.GetRequiredService(IParsingService).Get(myT, null_collapse(myParserInfo.Name, ''))
 
     return converter
 
@@ -56,7 +56,7 @@ def GetArrayArg(parameter: Parameter, function: Callable, argArray: list[str], c
         otype, get_parser(function, parameter.name))(context)
     for arg in argArray:
         array.append(convert(arg))
-    return array
+    return array, len(argArray)
 
 
 def __GetParametersFromFunc(func: Callable) -> List[Parameter]:
@@ -75,7 +75,7 @@ def GetMethodParameterInfo(func: Callable) -> SuitMethodParameterInfo:
     else:
         if len(parameters) == 0:
             suitMethodParameterInfo.TailParameterType = TailParameterType.Normal
-        tailParamAnnotation =get_origin(parameters[-1].annotation)
+        tailParamAnnotation = get_origin(parameters[-1].annotation)
         if inspect.isclass(tailParamAnnotation) and issubclass(tailParamAnnotation, List):
             suitMethodParameterInfo.TailParameterType = TailParameterType.Array
         # TODO: DynamicParameter support
@@ -108,18 +108,20 @@ def CreateInstance(otype, s: SuitContext) -> Optional[Any]:
 
     return otype(*args)
 
+
 def CreateInstanceWithProvider(otype, s: ServiceProvider) -> Optional[Any]:
     service = s.GetService(otype)
     if service is not None:
         return service
 
-    return ServiceDescriptor(otype, ServiceType.Singleton,None,None,otype).CreateInstance(s)
+    return ServiceDescriptor(otype, ServiceType.Singleton, None, None, otype).CreateInstance(s)
+
 
 def GetArgsInternal(func: Callable, parameterInfo: SuitMethodParameterInfo,
-                      args: List[str], context: SuitContext) -> Optional[List[Optional[Any]]]:
+                    args: List[str], context: SuitContext) -> Optional[List[Optional[Any]]]:
     parameters = __GetParametersFromFunc(func)
     pass_: List[Any] = [None] * len(parameters)
-    if parameterInfo.TailParameterType==TailParameterType.NoParameter: return pass_
+    if parameterInfo.TailParameterType == TailParameterType.NoParameter: return pass_
     i = 0
     j = 0
     try:

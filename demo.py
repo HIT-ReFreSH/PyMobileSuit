@@ -16,9 +16,15 @@ class Hello(object):
     async def async_func(self):
         print("this is async func")
 
-    @SuitInfo("helo")
+    @SuitInfo("helo <name>")
+    @SuitAlias("helo")
     def func_with_arg(self, name: str):
         print(f"this is async func {name}")
+
+    @SuitInfo("helos <names>[]")
+    @SuitAlias("helos")
+    def func_with_arg(self, names: list[str]):
+        print(f"this is async func {','.join(names)}")
 
     @SuitIgnore
     def ignored_func(self):
