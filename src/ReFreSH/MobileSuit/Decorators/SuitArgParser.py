@@ -31,7 +31,7 @@ def SuitArgParser(arg_name: str, parser_name: str = '', TTarget=None, TConverter
     """
     def decorator(func):
         if not hasattr(func, DecoratorNames.suit_alias):
-            setattr(func, DecoratorNames.suit_alias,{})
+            setattr(func, DecoratorNames.suit_alias, {})
         getattr(func, DecoratorNames.suit_alias)[arg_name] = SuitArgParserInfo.FromDecorator(
             parser_name, TTarget, TConverter)
         return func

@@ -32,8 +32,10 @@ pip install PyMobileSuit
 
 ```python
 # [Import and Configure]
-from ReFreSH.MobileSuit import *
-SuitConfig.LOCALE = 'en' # 'zh' or 'en' (default if not set)
+from src.ReFreSH import *
+
+SuitConfig.LOCALE = 'en'  # 'zh' or 'en' (default if not set)
+
 
 # [Write Application Class]
 class Hello(object):
@@ -62,6 +64,7 @@ class Hello(object):
     @SuitIgnore
     def ignored_func(self):
         print("this is func1")
+
 
 # [Quick Start App]
 Suit.QuickStart4BitPowerLine(Hello)

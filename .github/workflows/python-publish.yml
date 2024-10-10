@@ -37,10 +37,10 @@ jobs:
         pip install build
     - name: Build package
       run: python -m build
-      working-directory: ./ReFreSH/
+      working-directory: ./src/
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        packages-dir: ./ReFreSH/dist
+        packages-dir: ./src/dist
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}

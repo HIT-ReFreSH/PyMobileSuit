@@ -32,8 +32,10 @@ There is a quite simple example:
 
 ```python
 # [Import and Configure]
-from ReFreSH.MobileSuit import *
-SuitConfig.LOCALE = 'en' # 'zh' or 'en' (default if not set)
+from src.ReFreSH import *
+
+SuitConfig.LOCALE = 'en'  # 'zh' or 'en' (default if not set)
+
 
 # [Write Application Class]
 class Hello(object):
@@ -58,10 +60,11 @@ class Hello(object):
     @SuitAlias("helos")
     def func_with_list_arg(self, names: list[str]):
         print(f"this is async func {','.join(names)}")
-        
+
     @SuitIgnore
     def ignored_func(self):
         print("this is func1")
+
 
 # [Quick Start App]
 Suit.QuickStart4BitPowerLine(Hello)
