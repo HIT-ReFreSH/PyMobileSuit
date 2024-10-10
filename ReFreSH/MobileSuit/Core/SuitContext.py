@@ -1,5 +1,5 @@
 from ..RequestStatus import RequestStatus
-from ReFreSH.DependencyInjection import ServiceProvider
+from ...DependencyInjection import ServiceProvider
 
 from typing import Optional, Any
 

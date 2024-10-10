@@ -2,7 +2,7 @@ from typing import Optional, Iterable
 
 from colour import Color
 
-from ReFreSH.ConsoleColor import ConsoleColor
+from ..ConsoleColor import ConsoleColor
 
 
 class PrintUnit:

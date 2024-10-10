@@ -1,5 +1,4 @@
-
-from ReFreSH.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig
+from ReFreSH.MobileSuit import *
 SuitConfig.LOCALE = 'en'
 
 
@@ -23,7 +22,7 @@ class Hello(object):
 
     @SuitInfo("helos <names>[]")
     @SuitAlias("helos")
-    def func_with_arg(self, names: list[str]):
+    def func_with_args(self, names: list[str]):
         print(f"this is async func {','.join(names)}")
 
     @SuitIgnore

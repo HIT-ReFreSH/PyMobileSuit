@@ -1,2 +1,2 @@
-LOCALE='zh'
-THROW=False
+LOCALE = 'en'
+THROW = False

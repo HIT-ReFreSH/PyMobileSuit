@@ -6,7 +6,7 @@ from typing import Callable, Union, Iterable, Optional, List
 from colour import Color
 from pyasn1.type import char
 
-from ReFreSH.ConsoleColor import ConsoleColor
+from ..ConsoleColor import ConsoleColor
 from .Core.ColorSetting import IColorSetting
 from .Core.Services.PromptFormatter import PromptFormatter
 from .OutputType import OutputType

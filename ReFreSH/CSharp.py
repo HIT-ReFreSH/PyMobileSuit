@@ -1,5 +1,5 @@
 def nameof(obj):
-    return obj.__name__ if hasattr(obj, "__name__") else obj.name
+    return obj.__name__.split('.')[-1] if hasattr(obj, "__name__") else obj.name
 
 
 def null_collapse(obj, default):
