@@ -109,5 +109,5 @@ Normally, you should use `Suit.QuickStart` or `Suit.QuickStart4BitPowerLine`.
 
 Although MobileSuit is easy to use, its features are very comprehensive, so I haven't had the time to write complete documentation. 
 
-The current version of PyMobileSuit is migrated from C# using ChatGPT and manual rather than rewritten so that it might be buggy, and that's why I had not published it on the pypi.
+The current version of PyMobileSuit is migrated from C# using ChatGPT and manual rather than rewritten so that it might be buggy.
 

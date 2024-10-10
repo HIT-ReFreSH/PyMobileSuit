@@ -110,10 +110,5 @@ Suit.QuickStart4BitPowerLine(Hello)
 
 尽管 MobileSuit 很容易使用，但其功能非常全面，所以我还没有时间编写完整的文档。
 
-PyMobileSuit 的当前版本是从 C# 迁移而来，使用了 ChatGPT 和手动操作，而不是重新编写，因此可能存在错误，这也是我没有将其发布到 pypi 的原因。
-
-### 已知的错误（2023.7.21）
-
-- 具有参数的方法可能无法按预期调用。
-
+PyMobileSuit 的当前版本是从 C# 迁移而来，使用了 ChatGPT 和手动操作，而不是重新编写，因此可能存在错误。
  
