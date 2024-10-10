@@ -81,7 +81,7 @@ Suit.QuickStart4BitPowerLine(Hello)
 </div>
 ### 导入和配置
 
-`from ReFreSH.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig `是通常所需的全部内容。
+`from ReFreSH.MobileSuit import *`是通常所需的全部内容。
 
  对于 PyMobileSuit，有两个配置项：
 

@@ -83,7 +83,7 @@ And this is the result:
 
 ### Import and Configure
 
-`from ReFreSH.MobileSuit import SuitInfo, Suit, SuitIgnore, SuitAlias, SuitConfig` is ALL YOU NEED normally.
+`from ReFreSH.MobileSuit import *` is ALL YOU NEED normally.
 
 There are two configurations for PyMobileSuit:
 
