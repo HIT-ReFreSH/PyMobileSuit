@@ -2,7 +2,7 @@
     <img src="https://raw.githubusercontent.com/HIT-ReFreSH/PyMobileSuit/main/logo.png" width = 30% height = 30%  />
 </div>
 
-# ReFreSH.(Py)MobileSuit （**Still in Progress)**
+# ReFreSH.(Py)MobileSuit
 
 ![PyPI](https://img.shields.io/pypi/v/PyMobileSuit?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/HIT-ReFreSH/PyMobileSuit?style=flat-square)
@@ -14,7 +14,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/HIT-ReFreSH/PyMobileSuit?style=flat-square)
 ![GitHub code size](https://img.shields.io/github/languages/code-size/HIT-ReFreSH/PyMobileSuit?style=flat-square)
 
-~~[View at PyPI](https://pypi.org/project/PyMobileSuit/)~~
+[View at PyPI](https://pypi.org/project/PyMobileSuit/)
 
 MobileSuit provides an easy way to build Console App quickly. For python.
 
