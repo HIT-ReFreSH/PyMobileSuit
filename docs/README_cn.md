@@ -32,7 +32,7 @@ pip install PyMobileSuit
 
 ```python
 # [Import and Configure]
-from src.ReFreSH import *
+from ReFreSH.MobileSuit import *
 
 SuitConfig.LOCALE = 'en'  # 'zh' or 'en' (default if not set)
 
