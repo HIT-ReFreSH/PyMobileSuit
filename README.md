@@ -20,8 +20,6 @@ MobileSuit provides an easy way to build Console App quickly. For python.
 
 > This is the python version of [ReFreSH.MobileSuit](https://github.com/HIT-ReFreSH/MobileSuit) (For .NET).
 
-**NOTICE: This package is not published, the following content are placeholders.**
-
 ## Setup
 
 ```shell script
