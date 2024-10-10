@@ -7,7 +7,7 @@
 ![PyPI](https://img.shields.io/pypi/v/PyMobileSuit?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/HIT-ReFreSH/PyMobileSuit?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/HIT-ReFreSH/PyMobileSuit?style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/HIT-ReFreSH/PyMobileSuit/publish-python?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/HIT-ReFreSH/PyMobileSuit/python-publish.yml?style=flat-square)
 ![PyPI - Format](https://img.shields.io/pypi/format/PyMobileSuit?style=flat-square)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/PyMobileSuit?style=flat-square)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/PyMobileSuit?style=flat-square)
