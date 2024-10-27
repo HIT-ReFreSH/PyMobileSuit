@@ -32,11 +32,12 @@ class SuitMethodShell(SuitShell):
             self.Method)
         info = get_info(method)
         if info is None:
+            # TODO: Auto Info
             self.Type = MemberType.MethodWithoutInfo
             infoSb = ''
             if self._suitMethodParameterInfo.MaxParameterCount > 0:
                 for parameter in self.Parameters:
-                    infoSb += parameter.Name
+                    infoSb += parameter.name
                     if parameter.ParameterType.IsArray:
                         infoSb += "[]"
                     elif parameters[-1].ParameterType.GetInterface("IDynamicParameter") is not None:

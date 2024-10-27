@@ -27,12 +27,16 @@ setup(
 
     packages=find_packages(),
     package_data={
-        '':[
+        '': [
             "*Resources/*.yaml",
         ]
     },
     include_package_data=True,
     platforms="any",
     python_requires='>=3.9',
-    install_requires=["colour"]
+    install_requires=[
+        "pyasn1~=0.6.1",
+        "colour~=0.1.5",
+        "pyyaml~=0.2.5"
+    ]
 )

@@ -1,0 +1,4 @@
+pyasn1~=0.6.1
+colour~=0.1.5
+pyyaml~=0.2.5
+setuptools~=75.1.0
