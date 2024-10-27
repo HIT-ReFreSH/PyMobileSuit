@@ -1,46 +1,26 @@
 import unittest
-from inspect import signature
-from typing import Any, List
 from unittest.mock import Mock
+from ReFreSH.MobileSuit.Core.SuitBuildUtils import (
+    CreateConverterFactory,
+    GetArg,
+    GetArrayArg,
+    GetMethodParameterInfo,
+    CreateInstance,
+    CreateInstanceWithProvider,
+    GetArgs,
+    SuitMethodParameterInfo,
+    TailParameterType
+)
+from ReFreSH.MobileSuit.Core.SuitContext import SuitContext
 
-from ReFreSH.MobileSuit.Core.SuitBuildUtils import CreateConverterFactory, GetArg, GetArrayArg
-
-
-class SuitContext:
-    def GetRequiredService(self, service_type):
-        # Mock implementation
-        pass
-
-    def GetService(self, service_type):
-        # Mock implementation
-        pass
-
-
-class SuitArgParserInfo:
-    def __init__(self, name: str, Converter: Any):
-        self.Name = name
-        self.Converter = Converter
-
-class IParsingService:
-    def Get(self, t, name: str):
-        # Mock implementation
-        pass
-
-class SuitMethodParameterInfo:
-    # Define necessary attributes and methods if any
-    pass
-
-def null_collapse(value, default):
-    return value if value else default
-
-def get_parser(function, param_name):
-    # Mock function to return SuitArgParserInfo
-    return SuitArgParserInfo('', None)
 class MyTestCase(unittest.TestCase):
     def setUp(self):
-        self.context = Mock(spec=SuitContext)
-        self.parsing_service = Mock(spec=IParsingService)
-        self.context.GetRequiredService.return_value = self.parsing_service
+        # Set up mock SuitContext and other necessary mocks
+        self.mock_context = Mock(spec=SuitContext)
+        self.mock_function = Mock()
+        self.mock_parameter = Mock()
+        self.mock_parameter.annotation = str
+        self.mock_parameter.default = None
 
     def test_create_converter_factory_with_str_type(self):
         converter = CreateConverterFactory(str, None)(self.context)
