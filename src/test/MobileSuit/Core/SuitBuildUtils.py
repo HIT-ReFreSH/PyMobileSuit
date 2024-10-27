@@ -1,5 +1,8 @@
 import unittest
+from typing import List
 from unittest.mock import Mock
+
+from ReFreSH.MobileSuit.Core.Services.ParsingService import IParsingService
 from ReFreSH.MobileSuit.Core.SuitBuildUtils import (
     CreateConverterFactory,
     GetArg,
@@ -12,25 +15,28 @@ from ReFreSH.MobileSuit.Core.SuitBuildUtils import (
     TailParameterType
 )
 from ReFreSH.MobileSuit.Core.SuitContext import SuitContext
+from ReFreSH.MobileSuit.Decorators import SuitArgParserInfo
+
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
         # Set up mock SuitContext and other necessary mocks
         self.mock_context = Mock(spec=SuitContext)
+        self.mock_parsing_service = Mock(spec=IParsingService)
         self.mock_function = Mock()
         self.mock_parameter = Mock()
         self.mock_parameter.annotation = str
         self.mock_parameter.default = None
 
-    def test_create_converter_factory_with_str_type(self):
-        converter = CreateConverterFactory(str, None)(self.context)
+    def test_CreateConverterFactory_with_str_type(self):
+        converter = CreateConverterFactory(str, None)(self.mock_context)
         result = converter("test")
         self.assertEqual(result, "test")
 
-    def test_create_converter_factory_with_list_type(self):
-        list_str_converter = CreateConverterFactory(List[str], None)(self.context)
-        self.parsing_service.Get.return_value = "parsed_string"
-        result = list_str_converter("test")
+    def test_CreateConverterFactory_with_list_type(self):
+        list_str_converter = CreateConverterFactory(List[str], None)(self.mock_context)
+        self.mock_parsing_service.Get.return_value = "parsed_string"
+        result = list_str_converter("parsed_string")
         self.assertEqual(result, "parsed_string")
 
     def test_get_arg_with_none_arg(self):
@@ -69,7 +75,7 @@ class MyTestCase(unittest.TestCase):
             pass
 
         param = next(iter(signature(func).parameters.values()))
-        self.parsing_service.Get.return_value = 42  # Mocking parsed integer
+        self.mock_parsing_service.Get.return_value = 42  # Mocking parsed integer
         result, step = GetArrayArg(param, func, ["1", "2", "3"], self.context)
         self.assertEqual(step, 3)
         self.assertEqual(result, [42, 42, 42])

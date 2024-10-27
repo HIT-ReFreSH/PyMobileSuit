@@ -18,17 +18,17 @@ SuitCommandTargetAppTask = "app-task"
 InstanceFactory = Callable[[SuitContext], Any]
 
 
-def CreateConverterFactory(T, parserInfo: SuitArgParserInfo) -> Callable[
+def CreateConverterFactory(T, parserInfo: SuitArgParserInfo or None) -> Callable[
     [SuitContext], Callable[[str], Optional[object]]]:
     def converter(context: SuitContext):
         myT = T
         myParserInfo = SuitArgParserInfo('', None) if parserInfo is None else parserInfo
-        if myParserInfo.Converter is not None:
+        if hasattr(myParserInfo, "Converter") and myParserInfo.Converter is not None:
             return myParserInfo
-        if issubclass(myT, str):
-            return lambda s: s
-        if issubclass(get_origin(myT), List):
+        if isinstance(get_origin(myT), type) and issubclass(get_origin(myT), List):
             myT = get_args(myT)[0]
+        if isinstance(myT, type) and issubclass(myT, str):
+            return lambda s: s
         return context.GetRequiredService(IParsingService).Get(myT, null_collapse(myParserInfo.Name, ''))
 
     return converter
