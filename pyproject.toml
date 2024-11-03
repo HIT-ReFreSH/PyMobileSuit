@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyMobileSuit"
+dynamic = ["version"]
+description = "An easy way to build python-CLI App quickly."
+long_description = "MobileSuit provides an easy way to build Console App quickly. For python."
+keywords = ["commandline", "cli", "framework", "HIT-ReFreSH"]
+license = { text = "MIT" }
+url = "https://github.com/HIT-ReFreSH/PyMobileSuit"
+authors = [
+    { name = "Ferdinand Sukhoi", email = "ferdinandsukhoi@outlook.com" }
+]
+requires-python = ">=3.9"
+dependencies = [
+    "pyasn1",
+    "colorama",
+    "pyyaml"
+]
+
+[tool.setuptools_scm]
+
+[project.urls]
+"Homepage" = "https://github.com/HIT-ReFreSH/PyMobileSuit"
