@@ -15,8 +15,8 @@ from ReFreSH.MobileSuit.Core.SuitBuildUtils import (
     SuitMethodParameterInfo,
     TailParameterType
 )
-from ReFreSH.MobileSuit.Core.SuitContext import SuitContext
-from ReFreSH.MobileSuit.Decorators import SuitArgParserInfo
+from src.ReFreSH.MobileSuit.Core.SuitContext import SuitContext
+from src.ReFreSH.MobileSuit.Decorators import SuitArgParserInfo
 
 
 class MyTestCase(unittest.TestCase):
