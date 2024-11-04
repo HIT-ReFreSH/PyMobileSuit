@@ -38,12 +38,15 @@ class SuitMethodShell(SuitShell):
             if self._suitMethodParameterInfo.MaxParameterCount > 0:
                 for parameter in self.Parameters:
                     infoSb += parameter.name
-                    if parameter.ParameterType.IsArray:
+                    if parameter.annotation == list or parameter.annotation == tuple:
+
                         infoSb += "[]"
-                    elif parameters[-1].ParameterType.GetInterface("IDynamicParameter") is not None:
+                    elif getattr(parameters[-1].annotation, "IDynamicParameter", None) is not None:
+
                         infoSb += "{}"
                     elif parameter.default != inspect.Parameter.empty:
-                        infoSb += f"={parameter.DefaultValue}"
+                        infoSb += f"={parameter.default}"
+
                     else:
                         infoSb += ""
                     infoSb += ','
