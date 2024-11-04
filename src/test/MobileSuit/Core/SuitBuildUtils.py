@@ -2,8 +2,8 @@ import unittest
 from typing import List
 from unittest.mock import Mock
 
-from src.ReFreSH.MobileSuit.Core.Services.ParsingService import IParsingService
-from src.ReFreSH.MobileSuit.Core.SuitBuildUtils import (
+from ReFreSH.MobileSuit.Core.Services.ParsingService import IParsingService
+from ReFreSH.MobileSuit.Core.SuitBuildUtils import (
     CreateConverterFactory,
     GetArg,
     GetArrayArg,
