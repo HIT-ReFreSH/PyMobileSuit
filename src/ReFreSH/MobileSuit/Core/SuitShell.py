@@ -39,7 +39,7 @@ class SuitShell(ABC):
     """
 
     def __init__(self, member, instance_factory: Callable[[SuitContext], Any], absoluteName=None):
-        self.AbsoluteName = null_collapse(absoluteName, member.__name__)
+        self.AbsoluteName = NullCollapse(absoluteName, member.__name__)
         """
         Absolute name of this member.
         """

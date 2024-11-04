@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "PyMobileSuit"
-version = "0.1.1"
+version = "0.1.2"
 description = "An easy way to build python-CLI App quickly, MobileSuit provides an easy way to build Console App quickly. For python."
 keywords = ["commandline", "cli", "framework", "HIT-ReFreSH"]
 license = "MIT"
@@ -9,7 +9,8 @@ authors = ["Ferdinand Sukhoi <ferdinandsukhoi@outlook.com>"]
 repository = "https://github.com/HIT-ReFreSH/PyMobileSuit"
 packages = [
     { include = "ReFreSH", from = "src"},
-    { include = "MobileSuit", from = "src/ReFreSH" }
+    { include = "MobileSuit", from = "src/ReFreSH" },
+    { include = "CSharp", from = "src/ReFreSH" }
 ]
 
 [tool.poetry.dependencies]

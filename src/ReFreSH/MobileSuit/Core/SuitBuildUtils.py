@@ -2,7 +2,8 @@ import inspect
 from inspect import Parameter, signature, getmembers
 from typing import Optional, Callable, Any, get_args, get_origin, List
 
-from ...CSharp import null_collapse, linq_first_or_default, INT_MAX
+from ...CSharp import NullCollapse, INT_MAX
+from ...CSharp.Linq import FirstOrDefault
 from .Services.ParsingService import IParsingService
 from .SuitContext import SuitContext
 from .SuitMethodParameterInfo import SuitMethodParameterInfo, TailParameterType
@@ -29,7 +30,7 @@ def CreateConverterFactory(T, parserInfo: SuitArgParserInfo or None) -> Callable
             myT = get_args(myT)[0]
         if isinstance(myT, type) and issubclass(myT, str):
             return lambda s: s
-        return context.GetRequiredService(IParsingService).Get(myT, null_collapse(myParserInfo.Name, ''))
+        return context.GetRequiredService(IParsingService).Get(myT, NullCollapse(myParserInfo.Name, ''))
 
     return converter
 
@@ -103,7 +104,7 @@ def CreateInstance(otype, s: SuitContext) -> Optional[Any]:
     service = s.GetService(otype)
     if service is not None:
         return service
-    constructor = linq_first_or_default(getmembers(otype), lambda x: x[0] == '__init__')[1]
+    constructor = FirstOrDefault(getmembers(otype), lambda x: x[0] == '__init__')[1]
     args = GetArgs(constructor, [], s)
 
     return otype(*args)
