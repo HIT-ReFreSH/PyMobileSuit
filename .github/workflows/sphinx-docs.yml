@@ -44,7 +44,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r docs/requirements.txt
           pip install poetry
-          cd src
           poetry install
       - name: Build Docs
         run: |
