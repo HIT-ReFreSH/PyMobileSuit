@@ -36,7 +36,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install build
     - name: Build package
-      run: python -m build
+      run: |
+        cp ../*.md .
+        python -m build
       working-directory: ./src/
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@release/v1
