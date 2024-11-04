@@ -1,6 +1,6 @@
 from . import DecoratorNames
 from typing import Callable, Optional
-
+from collections.abc import Iterable # 使用Iterable判断可迭代性
 
 def get_alias(func: Callable):
     has_attr = hasattr(func, DecoratorNames.suit_alias)
@@ -23,7 +23,12 @@ def get_info(func: Callable) -> Optional[str]:
 def get_parser(func: Callable, arg_name: str):
     dic = getattr(func, DecoratorNames.suit_parser) if hasattr(
         func, DecoratorNames.suit_parser) else {}
-    return None if arg_name not in dic else dic[arg_name]
+    
+    if isinstance(dic, Iterable): # 改正了dic不可迭代时 not in 导致的错误
+        if arg_name not in dic:
+            return dic[arg_name]
+    return None  
+    # return None if arg_name not in dic else dic[arg_name]
 
 
 def get_injected(func: Callable, arg_name: str) -> bool:

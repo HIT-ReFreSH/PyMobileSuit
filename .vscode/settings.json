@@ -4,7 +4,7 @@
         "-s",
         "./src/test/MobileSuit/Core",
         "-p",
-        "*test*.py"
+        "*Utils*.py"
     ],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true
