@@ -43,12 +43,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r docs/requirements.txt
-          pip install poetry
-          poetry install
       - name: Build Docs
         run: |
           sphinx-apidoc -o source ../src/ReFreSH/
           sphinx-build -b html . build
+          ls
+          ls build
         working-directory: ./docs/
       - name: Setup Pages
         uses: actions/configure-pages@v3
@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
             # Upload entire repository
-          path: 'docs/build'
+          path: docs/build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
