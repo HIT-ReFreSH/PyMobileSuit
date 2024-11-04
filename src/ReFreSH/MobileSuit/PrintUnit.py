@@ -2,8 +2,6 @@ from typing import Optional, Iterable
 
 from colour import Color
 
-from colorama import *
-
 from ..ConsoleColor import ConsoleColor
 
 
