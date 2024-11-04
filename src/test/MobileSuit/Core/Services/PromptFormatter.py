@@ -2,9 +2,9 @@
 import unittest
 from typing import List
 from colour import Color
-from src.ReFreSH.MobileSuit.PrintUnit import PrintUnit
-from src.ReFreSH.MobileSuit.Resources import Lang
-from src.ReFreSH.MobileSuit.Core.Services.PromptFormatter import  PromptFormatters
+from ReFreSH.MobileSuit.PrintUnit import PrintUnit
+from ReFreSH.MobileSuit.Resources import Lang
+from ReFreSH.MobileSuit.Core.Services.PromptFormatter import  PromptFormatters
 
 class TestPromptFormatters(unittest.TestCase):
 
