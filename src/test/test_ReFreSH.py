@@ -1,7 +1,7 @@
 import unittest
-from src.ReFreSH.ConsoleColor import ConsoleColor
-from src.ReFreSH.CSharp import null_collapse,linq_first_or_default
-from src.ReFreSH.DependencyInjection import ServiceDescriptor, ServiceType, ServiceProvider, ServiceInstantiationFailure
+from ReFreSH.ConsoleColor import ConsoleColor
+from ReFreSH.CSharp import null_collapse,linq_first_or_default
+from ReFreSH.DependencyInjection import ServiceDescriptor, ServiceType, ServiceProvider, ServiceInstantiationFailure
 
 class TestReFreSH(unittest.TestCase):
 
