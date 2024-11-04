@@ -1,7 +1,7 @@
 from typing import Callable, Any, List
 import inspect
 
-from . import SuitBuildUtils
+from src.ReFreSH.MobileSuit.Core import SuitBuildUtils
 
 from .SuitMethodParameterInfo import TailParameterType
 
