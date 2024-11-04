@@ -42,3 +42,13 @@ class PrintUnit:
     @classmethod
     def FromIterables(cls, tp: Iterable[Iterable]):
         return map(cls.FromIterable, tp)
+
+    def __eq__(self, other):
+        if isinstance(other, PrintUnit):
+            return (self.Text == other.Text and
+                    self.Foreground == other.Foreground and
+                    self.Background == other.Background)
+        return False
+
+    def __repr__(self):
+        return f"PrintUnit(Text='{self.Text}', Foreground={self.Foreground}, Background={self.Background})"

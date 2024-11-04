@@ -9,8 +9,6 @@ PromptFormatter = Callable[[Iterable[PrintUnit]], Iterable[PrintUnit]]
 """
 represents a generator provides prompt output.
 """
-
-
 class PromptFormatters:
     """Default prompt formatters."""
 
@@ -60,14 +58,13 @@ class PromptFormatters:
         if len(orgList) > 0:
             r.append(PrintUnit(" ", foreGrounds[0], backGrounds[0]))
         for i in range(len(orgList)):
-
             txt = orgList[i].Text
             if len(txt) == 0: continue
             if txt.startswith(Lang.Tasks):
                 txt = txt.replace(Lang.Tasks, f"{PromptFormatters.Lightning} ", 1)
             r.append(PrintUnit(f"{txt}", foreGrounds[i], backGrounds[i]))
             r.append(PrintUnit(" ", foreGrounds[i], backGrounds[i]))
-            r.append(PrintUnit(f"{PromptFormatters.RightTriangle} ", backGrounds[i],
-                               backGrounds[i + 1] if i + 1 < len(orgList) else None))
+            if i < len(orgList) - 1:
+                r.append(PrintUnit(f"{PromptFormatters.RightTriangle} ", backGrounds[i], backGrounds[i + 1]))
 
         return r

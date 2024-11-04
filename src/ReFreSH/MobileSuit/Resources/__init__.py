@@ -10,6 +10,7 @@ class Translated(object):
     def __init__(self, package_name, resource_dir=res_dir):
         self.package_name = package_name
         self.resource_dir = res_dir
+        self.Load()
     def Load(self):
         path = os.path.join(self.resource_dir, f'{self.package_name}.{SuitConfig.LOCALE}.yaml')
         with open(path,'r', encoding='utf8') as f:
