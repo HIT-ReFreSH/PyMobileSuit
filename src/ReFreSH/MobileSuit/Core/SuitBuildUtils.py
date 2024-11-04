@@ -51,9 +51,13 @@ def GetArg(parameter: Parameter, function: Callable, arg: Optional[str], context
 
 def GetArrayArg(parameter: Parameter, function: Callable, argArray: list[str], context: SuitContext) -> object:
     otype = get_args(parameter.annotation)[0]
+    print(parameter)
+    print('otype',otype)
     array = list[otype]()
+
     convert = CreateConverterFactory(
-        otype, get_parser(function, parameter.name))(context)
+        otype, get_parser(function, otype))(context)
+
     for arg in argArray:
         array.append(convert(arg))
     return array, len(argArray)
@@ -67,31 +71,40 @@ def __GetParametersFromFunc(func: Callable) -> List[Parameter]:
 
 def GetMethodParameterInfo(func: Callable) -> SuitMethodParameterInfo:
     parameters = __GetParametersFromFunc(func)
+    print(parameters)
+    print("lololololol")
     suitMethodParameterInfo = SuitMethodParameterInfo()
     originCount = len(parameters)
-    parameters = [p for p in parameters if not get_injected(func, p.name)]
+    # 过滤特殊参数 *args 和 **kwargs 防止迭代出现错误 
+    parameters = [p for p in parameters if p.kind not in {Parameter.VAR_POSITIONAL, Parameter.VAR_KEYWORD}] 
+    print(parameters)
     if originCount == 0:
         suitMethodParameterInfo.TailParameterType = TailParameterType.NoParameter
+        i=-1
     else:
         if len(parameters) == 0:
-            suitMethodParameterInfo.TailParameterType = TailParameterType.Normal
-        tailParamAnnotation = get_origin(parameters[-1].annotation)
-        if inspect.isclass(tailParamAnnotation) and issubclass(tailParamAnnotation, List):
-            suitMethodParameterInfo.TailParameterType = TailParameterType.Array
-        # TODO: DynamicParameter support
-        # elif parameters[-1].ParameterType.GetInterface("IDynamicParameter") is not None:
-        #     suitMethodParameterInfo.TailParameterType = TailParameterType.DynamicParameter
-        else:
-            suitMethodParameterInfo.TailParameterType = TailParameterType.Normal
+            suitMethodParameterInfo.TailParameterType = TailParameterType.NoParameter
+        else:   # 补充了else缺失导致的越界错误
+            tailParamAnnotation = get_origin(parameters[-1].annotation)
+            if inspect.isclass(tailParamAnnotation) and issubclass(tailParamAnnotation, List):
+                suitMethodParameterInfo.TailParameterType = TailParameterType.Array
+            # TODO: DynamicParameter support
+            # elif parameters[-1].ParameterType.GetInterface("IDynamicParameter") is not None:
+            #     suitMethodParameterInfo.TailParameterType = TailParameterType.DynamicParameter
+            else:
+                suitMethodParameterInfo.TailParameterType = TailParameterType.Normal
 
-        suitMethodParameterInfo.MaxParameterCount = len(
-            parameters) if suitMethodParameterInfo.TailParameterType == TailParameterType.Normal else INT_MAX
-        suitMethodParameterInfo.NonArrayParameterCount = len(
-            parameters) if suitMethodParameterInfo.TailParameterType == TailParameterType.Normal else len(
-            parameters) - 1
-        i = suitMethodParameterInfo.NonArrayParameterCount - 1
-        while i >= 0 and parameters[i].default != Parameter.empty:
-            i -= 1
+            suitMethodParameterInfo.MaxParameterCount = len(
+                parameters) if suitMethodParameterInfo.TailParameterType == TailParameterType.Normal else INT_MAX
+            suitMethodParameterInfo.NonArrayParameterCount = len(
+                parameters) if suitMethodParameterInfo.TailParameterType == TailParameterType.Normal else len(
+                parameters) - 1
+            i = suitMethodParameterInfo.NonArrayParameterCount - 1
+            while i >= 0 and parameters[i].default != Parameter.empty:
+                i -= 1
+
+        if 'i' not in locals():
+            i = -1  # 如果没有其他地方定义，设置默认值-1
 
         suitMethodParameterInfo.MinParameterCount = i + 1
         suitMethodParameterInfo.NonArrayParameterCount = originCount if suitMethodParameterInfo.TailParameterType == TailParameterType.Normal else originCount - 1
