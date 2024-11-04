@@ -8,9 +8,9 @@ readme = "README.md"
 authors = ["Ferdinand Sukhoi <ferdinandsukhoi@outlook.com>"]
 repository = "https://github.com/HIT-ReFreSH/PyMobileSuit"
 packages = [
-    { include = "ReFreSH", from = "src"},
-    { include = "MobileSuit", from = "src/ReFreSH" },
-    { include = "CSharp", from = "src/ReFreSH" }
+    { include = "ReFreSH"},
+    { include = "MobileSuit", from = "ReFreSH" },
+    { include = "CSharp", from = "ReFreSH" }
 ]
 
 [tool.poetry.dependencies]
