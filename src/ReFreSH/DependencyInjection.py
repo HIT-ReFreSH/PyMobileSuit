@@ -7,7 +7,11 @@ from .CSharp import nameof
 
 class ServiceType(Enum):
     """
-    Lifetime of a service
+    Enumeration representing the lifetime of a service.
+
+    Attributes:
+        Singleton: Service will only be instantiated once.
+        Scoped: Service will be instantiated for each request.
     """
     Singleton = 0
     """
