@@ -1,4 +1,4 @@
-from .. import SuitBuildUtils
+from src.ReFreSH.MobileSuit.Core import SuitBuildUtils
 from ..ISuitMiddleware import ISuitMiddleware, SuitRequestDelegate
 from ..Services.HistoryService import IHistoryService
 from ..SuitContext import SuitContext
