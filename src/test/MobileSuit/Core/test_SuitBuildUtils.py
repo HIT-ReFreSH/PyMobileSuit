@@ -49,6 +49,7 @@ class MyTestCase(unittest.TestCase):
     def test_GetArrayArg_with_string_list(self):
         self.mock_parameter.annotation = list[str]
         arg_list = ["arg1", "arg2"]
+        self.mock_function.__dict__["____suit_parser"] = {}
         result, length = GetArrayArg(self.mock_parameter, self.mock_function, arg_list, self.mock_context)
         self.assertEqual(result, arg_list)
         self.assertEqual(length, len(arg_list))
