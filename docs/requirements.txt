@@ -1,6 +1,0 @@
-sphinx-material
-myst_parser
-sphinx
-colour
-pyyaml
-pyasn1
