@@ -111,10 +111,10 @@ class MyTestCase(unittest.TestCase):
     def test_get_array_arg(self):
         def func(args: List[int]):
             pass
-
         param = next(iter(signature(func).parameters.values()))
-        self.mock_parsing_service.Get.return_value = 42  # Mocking parsed integer
-        result, step = GetArrayArg(param, func, ["1", "2", "3"], self.context)
+        self.mock_parsing_service.Get.side_effect = lambda myT, name: lambda s: 42
+        self.mock_context.GetRequiredService.return_value = self.mock_parsing_service
+        result, step = GetArrayArg(param, func, ["1", "2", "3"], self.mock_context)
         self.assertEqual(step, 3)
         self.assertEqual(result, [42, 42, 42])
 
