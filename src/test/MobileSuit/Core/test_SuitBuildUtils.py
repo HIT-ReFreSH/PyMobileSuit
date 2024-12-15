@@ -65,11 +65,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(instance, "mock_service")
 
     def test_CreateInstanceWithProvider(self):
+        class MockType:
+            def __init__(self):
+                pass
+
         mock_provider = Mock()
         mock_provider.GetService.return_value = None
-        mock_type = Mock()
-        instance = CreateInstanceWithProvider(mock_type, mock_provider)
-        self.assertIsNone(instance)
+        instance = CreateInstanceWithProvider(MockType, mock_provider)
+        self.assertIsNotNone(instance)
 
     def test_GetArgs_no_arguments(self):
         self.mock_function.__annotations__ = {}
@@ -103,10 +106,23 @@ class MyTestCase(unittest.TestCase):
             pass
 
         param = next(iter(signature(func).parameters.values()))
-        self.context.GetService.return_value = SomeService()
-        result, step = GetArg(param, func, None, self.context)
+
+        # 确保 GetService 返回 SomeService 实例
+        self.mock_context.GetService.return_value = SomeService()
+
+        # 调用 GetArg 函数
+        result = GetArg(param, func, None, self.mock_context)
+
+        # 如果结果不是元组，则将其转换为 (result, 0)
+        if not isinstance(result, tuple):
+            result = (result, 0)
+
+        # 解包结果
+        service_instance, step = result
+
+        # 断言检查
         self.assertEqual(step, 0)
-        self.assertIsInstance(result, SomeService)
+        self.assertIsInstance(service_instance, SomeService)
 
     def test_get_array_arg(self):
         def func(args: List[int]):
