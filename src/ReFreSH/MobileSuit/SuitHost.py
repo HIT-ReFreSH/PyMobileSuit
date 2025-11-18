@@ -7,6 +7,7 @@ from .Core.Services.TaskService import TaskRecorder
 from .Core.SuitContext import SuitContext
 from .RequestStatus import RequestStatus
 from ..DependencyInjection import ServiceProvider
+from .Core.Services.AppInfo import ISuitAppInfo
 
 
 class SuitHost:
@@ -31,7 +32,7 @@ class SuitHost:
     async def EmptyMiddlewareInvocation(c: SuitContext):
         pass
 
-    def Start(self):
+    async def Start(self):
         if self._hostTask is not None:
             return
 
@@ -41,20 +42,21 @@ class SuitHost:
             requestStack.append(SuitHost.CreateMiddlewareInvocation(middleware, nextStep))
 
         handleRequest = requestStack[-1]
-        # TODO: startup arg support
-        # appInfo = self._rootScope.GetRequiredService(ISuitAppInfo)
-        # if appInfo.StartArgs:
-        #     requestScope = self.Services.CreateScope()
-        #     context = SuitContext(requestScope)
-        #     context.RequestStatus = RequestStatus.NotHandled
-        #     context.Request = appInfo.StartArgs
+        # TODO: startup arg support -- Done
+        appInfo = self._rootScope.GetRequiredService(ISuitAppInfo)
+        if appInfo.StartArgs:
+            requestScope = self.Services.CreateScope()
+            context = SuitContext(requestScope)
+            context.RequestStatus = RequestStatus.NotHandled
+            context.Request = appInfo.StartArgs
         #
-        #     try:
-        #         await handleRequest(context)
-        #     except Exception as ex:
-        #         context.Exception = ex
-        #         context.RequestStatus = RequestStatus.Faulted
-        #         await self._exceptionHandler.InvokeAsync(context)
+            try:
+                await handleRequest(context)
+            except Exception as ex:
+                context.Exception = ex
+                context.RequestStatus = RequestStatus.Faulted
+                await self._exceptionHandler.InvokeAsync(context)
+            return 
 
         self._hostTask = asyncio.create_task(self.HandleRequest(handleRequest))
 
@@ -96,8 +98,9 @@ class SuitHost:
         self._rootScope.Dispose()
 
     async def RunAsync(self):
-        self.Start()
-        await self._hostTask
+        await self.Start()
+        if self._hostTask:
+            await self._hostTask
 
     def Run(self):
         asyncio.run(self.RunAsync())
