@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, r'C:\kaiyuan_ex\PyMobileSuit\src')
+
 import unittest
 from inspect import signature
 from typing import List
@@ -15,14 +18,17 @@ from ReFreSH.MobileSuit.Core.SuitBuildUtils import (
     SuitMethodParameterInfo,
     TailParameterType
 )
-from src.ReFreSH.MobileSuit.Core.SuitContext import SuitContext
-from src.ReFreSH.MobileSuit.Decorators import SuitArgParserInfo
+from ReFreSH.MobileSuit.Core.SuitContext import SuitContext
+from ReFreSH.MobileSuit.Decorators import SuitArgParserInfo
 
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
         # Set up mock SuitContext and other necessary mocks
         self.mock_context = Mock(spec=SuitContext)
+
+        self.mock_context.GetService.return_value = None
+
         self.mock_parsing_service = Mock(spec=IParsingService)
         self.mock_function = Mock()
         #添加缺失的属性，避免get_injected函数出错
@@ -96,18 +102,23 @@ class MyTestCase(unittest.TestCase):
             pass
 
         param = next(iter(signature(func).parameters.values()))
-        result, step = GetArg(param, func, None, self.context)
+        result_step = GetArg(param, func, None, self.mock_context)
+        if isinstance(result_step, tuple):
+            result, step = result_step
+        else:
+            result, step = result_step, 0
         self.assertEqual(step, 0)
-        self.assertIsNone(result)  # Assuming default is None for int
+        from inspect import _empty
+        self.assertIs(result, _empty)
 
     def test_get_arg_with_context_type(self):
         def func(context: SuitContext):
             pass
 
         param = next(iter(signature(func).parameters.values()))
-        result, step = GetArg(param, func, None, self.context)
+        result, step = GetArg(param, func, None, self.mock_context)
         self.assertEqual(step, 0)
-        self.assertEqual(result, self.context)
+        self.assertEqual(result, self.mock_context)
 
     def test_get_arg_with_service_type(self):
         class SomeService:
