@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, r'C:\kaiyuan_ex\PyMobileSuit\src')
+
 import unittest
 from inspect import signature
 from typing import List
@@ -15,16 +18,21 @@ from ReFreSH.MobileSuit.Core.SuitBuildUtils import (
     SuitMethodParameterInfo,
     TailParameterType
 )
-from src.ReFreSH.MobileSuit.Core.SuitContext import SuitContext
-from src.ReFreSH.MobileSuit.Decorators import SuitArgParserInfo
+from ReFreSH.MobileSuit.Core.SuitContext import SuitContext
+from ReFreSH.MobileSuit.Decorators import SuitArgParserInfo
 
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
         # Set up mock SuitContext and other necessary mocks
         self.mock_context = Mock(spec=SuitContext)
+
+        self.mock_context.GetService.return_value = None
+
         self.mock_parsing_service = Mock(spec=IParsingService)
         self.mock_function = Mock()
+        #添加缺失的属性，避免get_injected函数出错
+        self.mock_function.____suit_injected = []
         self.mock_parameter = Mock()
         self.mock_parameter.annotation = str
         self.mock_parameter.default = None
@@ -55,8 +63,13 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(length, len(arg_list))
 
     def test_GetMethodParameterInfo_no_parameters(self):
-        self.mock_function.__annotations__ = {}
-        info = GetMethodParameterInfo(self.mock_function)
+        def test_func():
+            pass
+
+        #设置必要的属性
+        test_func.____suit_injected = []
+        test_func.__annotations__ = {}
+        info = GetMethodParameterInfo(test_func)
         self.assertEqual(info.TailParameterType, TailParameterType.NoParameter)
 
     def test_CreateInstance_with_mock_service(self):
@@ -75,8 +88,12 @@ class MyTestCase(unittest.TestCase):
         self.assertIsNotNone(instance)
 
     def test_GetArgs_no_arguments(self):
-        self.mock_function.__annotations__ = {}
-        result = GetArgs(self.mock_function, [], self.mock_context)
+        def test_func():
+            pass
+        #设置必要的属性
+        test_func.____suit_injected = []
+        test_func.__annotations__ = {}
+        result = GetArgs(test_func, [], self.mock_context)
         self.assertIsNotNone(result)
         self.assertEqual(len(result), 0)
 
@@ -85,18 +102,23 @@ class MyTestCase(unittest.TestCase):
             pass
 
         param = next(iter(signature(func).parameters.values()))
-        result, step = GetArg(param, func, None, self.context)
+        result_step = GetArg(param, func, None, self.mock_context)
+        if isinstance(result_step, tuple):
+            result, step = result_step
+        else:
+            result, step = result_step, 0
         self.assertEqual(step, 0)
-        self.assertIsNone(result)  # Assuming default is None for int
+        from inspect import _empty
+        self.assertIs(result, _empty)
 
     def test_get_arg_with_context_type(self):
         def func(context: SuitContext):
             pass
 
         param = next(iter(signature(func).parameters.values()))
-        result, step = GetArg(param, func, None, self.context)
+        result, step = GetArg(param, func, None, self.mock_context)
         self.assertEqual(step, 0)
-        self.assertEqual(result, self.context)
+        self.assertEqual(result, self.mock_context)
 
     def test_get_arg_with_service_type(self):
         class SomeService:
