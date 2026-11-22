@@ -96,9 +96,9 @@ class TaskService(ITaskService):
     def GetTasks(self) -> Iterable[TaskInfo]:
         for i, (_, context) in enumerate(self._tasks):
             ti = TaskInfo()
-            ti.Index = i,
-            ti.Request = " ".join(context.Request),
-            ti.Response = context.Response,
+            ti.Index = i
+            ti.Request = " ".join(context.Request)
+            ti.Response = context.Response
             ti.Status = context.RequestStatus
 
             yield ti
